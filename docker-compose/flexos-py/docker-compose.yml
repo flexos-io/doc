@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+
+  flexos-py:
+    image: flexos/py:0.1.0
+    container_name: flexos-py
+    hostname: flexos-py
+    volumes:
+      # READ-WRITE
+      - ./py/app:/app
+      # READ-ONLY
+      - ./py/app/flexos-py-base/flexospybase:${HOME}/.local/lib/python/site-packages/flexospybase:ro
+      - ./py/app/flexos-py-flask/flexospyflask:${HOME}/.local/lib/python/site-packages/flexospyflask:ro
+    networks:
+      flexos:
+        aliases:
+          - flexos-py
+    restart: "no"
+    working_dir: /app
+    environment:
+      - STAGE=dev
+    user: ${USER_NAME}
+    privileged: true
+    command: sleep infinity
+
+networks:
+  flexos:
+    external:
+      name: flexos
